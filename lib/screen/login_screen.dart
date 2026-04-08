@@ -1,9 +1,6 @@
-
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:mad/forget_password_screen.dart';
-import 'package:mad/main.dart';
+import 'package:mad/screen/forget_password_screen.dart';
+import 'package:mad/screen/register_screen.dart';
 import 'package:mad/widgets/app_logo.dart' as appLogo;
 
 class LoginScreen extends StatefulWidget {
@@ -21,8 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-
-
   void _onEmailChangeHandler(String email){
       if(email.isNotEmpty && email.contains("@")){
         setState(() {
@@ -37,7 +32,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _keyForm = GlobalKey<FormState>();
 
-
   void _onLoginSubmitHandler(){
     print("Email  : ${emailController.text}");
     print("Password : ${passwordController.text}");
@@ -46,10 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-
 
     final customLogo = SizedBox(
       height: 300,
@@ -77,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
         },
     )
     );
+
     final passwordTextField = Padding(
         padding: EdgeInsets.all(8),
         child: TextFormField(
@@ -125,7 +118,36 @@ class _LoginScreenState extends State<LoginScreen> {
         }, child: Text("ភ្លេចលេខសង្ងាត់"))
       ],
     );
+    
+    final noAccount = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("មិនមានគណនីទេ?"),
+        TextButton(onPressed: (){
+          final route = MaterialPageRoute(builder: (BuildContext context) => RegisterScreen());
+          Navigator.push(context, route);
+        }, child: Text("ចុះឈ្មោះ", style: TextStyle(fontWeight: FontWeight.bold),))
+      ],
+    );
 
+    final orLineWidget = Row(
+      children: [
+        Expanded(child: Divider(thickness: 2,)),
+        Text("ឬក៏"),
+        Expanded(child: Divider(thickness: 2,)),
+      ],
+    );
+
+    final socialWidget = Padding(
+      padding: EdgeInsets.only(top: 16),
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.facebook, color: Colors.blue,size: 40,),
+        SizedBox(width: 8,),
+        Icon(Icons.mail_outlined, color: Colors.red,size: 40,)
+      ],
+    ),);
 
     final loginForm = Form(
         key: _keyForm,
@@ -138,15 +160,15 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
 
-
-
-
     return Scaffold(
       body: Column(
         children: [
           customLogo,
           loginForm,
-          loginButton
+          loginButton,
+          noAccount,
+          orLineWidget,
+          socialWidget
         ],
       ),
     );

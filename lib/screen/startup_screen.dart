@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mad/login_screen.dart';
+import 'package:mad/screen/login_screen.dart';
 import 'package:mad/widgets/app_logo.dart' as appLogo;
 
 class StartupScreen extends StatefulWidget {
