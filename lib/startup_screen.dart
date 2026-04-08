@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mad/login_screen.dart';
+import 'package:mad/widgets/app_logo.dart' as appLogo;
 
 class StartupScreen extends StatefulWidget {
   const StartupScreen({super.key});
@@ -11,10 +13,7 @@ class _StartupScreenState extends State<StartupScreen> {
   @override
   Widget build(BuildContext context) {
 
-    final logo = Center(
-      child: Image.asset("assets/images/beltei_iu.png", height: 150,),
-    );
-    
+
     final getStartBtn = Padding(padding: EdgeInsets.only(left: 8, right: 8, bottom: 16),
     child: SizedBox(
       height: 40,
@@ -23,14 +22,17 @@ class _StartupScreenState extends State<StartupScreen> {
           style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF3051A0)
           ),
-          onPressed: (){}, child: Text("ចាប់ផ្តើម", style: TextStyle(color: Colors.white),)),
+          onPressed: (){
+            final route = MaterialPageRoute(builder: (BuildContext context) => LoginScreen());
+            Navigator.pushReplacement(context, route);
+          }, child: Text("ចាប់ផ្តើម", style: TextStyle(color: Colors.white),)),
     ),);
 
 
     return Scaffold(
       body: Column(
         children: [
-          Expanded(child: logo,),
+          Expanded(child: appLogo.logo,),
           getStartBtn
         ],
       ),
