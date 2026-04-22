@@ -13,9 +13,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     return Scaffold(
       appBar: AppBar(
       ),
-      body: Center(
+      body: SafeArea(child: Center(
         child: Text("Forget Password"),
-      ),
+      )),
     );
   }
 }

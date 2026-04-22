@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mad/screen/forget_password_screen.dart';
+import 'package:mad/screen/main_screen.dart';
 import 'package:mad/screen/register_screen.dart';
 import 'package:mad/widgets/app_logo.dart' as appLogo;
 
@@ -44,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
 
     final customLogo = SizedBox(
-      height: 300,
+      height: MediaQuery.of(context).size.height * 0.2,
       child: appLogo.logo,
     );
 
@@ -108,7 +109,6 @@ class _LoginScreenState extends State<LoginScreen> {
             , child: Text("ចូលប្រើ", style: TextStyle(color: Colors.white),)),
       ),);
 
-
     final forgetPassword = Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -160,17 +160,25 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
 
+    final _skipButton = TextButton(onPressed: (){
+      final route = MaterialPageRoute(builder: (BuildContext context) => MainScreen());
+      Navigator.pushReplacement(context, route);
+    }, child: Text("រំលង", style: TextStyle(color: Colors.blue),));
+
     return Scaffold(
-      body: Column(
+      body: SafeArea(
+          child: Column(
         children: [
           customLogo,
           loginForm,
           loginButton,
           noAccount,
           orLineWidget,
-          socialWidget
+          socialWidget,
+          SizedBox(height: 40,),
+          _skipButton
         ],
-      ),
+      )),
     );
   }
 }

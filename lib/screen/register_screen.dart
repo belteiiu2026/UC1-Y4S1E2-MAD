@@ -17,9 +17,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       appBar: AppBar(
 
       ),
-      body: Center(
+      body: SafeArea(child: Center(
         child: Text("Register"),
-      ),
+      )),
     );
   }
 }

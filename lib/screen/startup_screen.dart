@@ -25,17 +25,17 @@ class _StartupScreenState extends State<StartupScreen> {
           onPressed: (){
             final route = MaterialPageRoute(builder: (BuildContext context) => LoginScreen());
             Navigator.pushReplacement(context, route);
-          }, child: Text("ចាប់ផ្តើម", style: TextStyle(color: Colors.white),)),
+          }, child: Text("ចាប់ផ្តើម", style: TextStyle(color: Colors.white, fontFamily: 'KantumruyPro'),)),
     ),);
 
-
     return Scaffold(
-      body: Column(
+      body: SafeArea(
+          child: Column(
         children: [
           Expanded(child: appLogo.logo,),
           getStartBtn
         ],
-      ),
+      )),
     );
   }
 }
