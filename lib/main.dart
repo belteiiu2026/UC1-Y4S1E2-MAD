@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mad/screen/startup_screen.dart';
+import 'package:mad/widgets/app_color.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,17 +19,16 @@ class App extends StatelessWidget {
 
         // fontFamily: 'NotoSansKhmer',
         // fontFamily: 'Hanuman',
-        fontFamily: 'KantumruyPro',
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-
-
+        // fontFamily: 'KantumruyPro',
+        colorScheme: ColorScheme.fromSeed(seedColor: app_background),
+        // primarySwatch: ColorScheme.fromSeed(seedColor: Colors.green),
 
         // Google Font
-        textTheme: TextTheme(
-          labelLarge: GoogleFonts.notoSansKhmer(),
-          labelMedium: GoogleFonts.notoSansKhmer(),
-          labelSmall: GoogleFonts.notoSansKhmer(),
-        ),
+        // textTheme: TextTheme(
+        //   labelLarge: GoogleFonts.notoSansKhmer(),
+        //   labelMedium: GoogleFonts.notoSansKhmer(),
+        //   labelSmall: GoogleFonts.notoSansKhmer(),
+        // ),
       ),
       home: StartupScreen(),
     );

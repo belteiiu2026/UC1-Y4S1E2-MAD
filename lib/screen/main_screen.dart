@@ -3,7 +3,6 @@ import 'package:mad/screen/account_screen.dart';
 import 'package:mad/screen/cart_screen.dart';
 import 'package:mad/screen/favorite_screen.dart';
 import 'package:mad/screen/home_screen.dart';
-import 'package:mad/screen/search_screen.dart';
 import 'package:mad/widgets/app_color.dart' as appColor;
 
 class MainScreen extends StatefulWidget {
@@ -19,7 +18,6 @@ class _MainScreenState extends State<MainScreen> {
 
   List<Widget> screenList = [
     HomeScreen(),
-    SearchScreen(),
     FavoriteScreen(),
     CartScreen(),
     AccountScreen()
@@ -35,22 +33,23 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
 
     List<BottomNavigationBarItem> bottomNavItems = [
-      BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-      BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-      BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorite'),
-      BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
-      BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Account'),
+      BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home', backgroundColor: appColor.app_background),
+      BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorite', backgroundColor: appColor.app_background),
+      BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart', backgroundColor: appColor.app_background),
+      BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Account', backgroundColor: appColor.app_background),
     ];
 
     final bottomNavBar = BottomNavigationBar(
       fixedColor: Colors.pinkAccent,
-      type: BottomNavigationBarType.fixed,
+      type: BottomNavigationBarType.shifting,
       backgroundColor: appColor.app_background,
       items: bottomNavItems,
       currentIndex: _currentIndex,
       onTap: _onTabClick,
       selectedFontSize: 15,
       unselectedFontSize: 13,
+      showSelectedLabels: true,
+      showUnselectedLabels: true,
     );
 
     return Scaffold(
