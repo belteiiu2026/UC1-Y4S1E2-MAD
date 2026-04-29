@@ -3,6 +3,7 @@ import 'package:mad/screen/forget_password_screen.dart';
 import 'package:mad/screen/main_screen.dart';
 import 'package:mad/screen/register_screen.dart';
 import 'package:mad/widgets/app_logo.dart' as appLogo;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,11 +34,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _keyForm = GlobalKey<FormState>();
 
-  void _onLoginSubmitHandler(){
+  Future<void> _onLoginSubmitHandler() async{
     print("Email  : ${emailController.text}");
     print("Password : ${passwordController.text}");
+
     if(_keyForm.currentState!.validate()){
+      String user = emailController.text;
+      String pass = passwordController.text;
         // Can submit to Backend API.
+      final pref = await SharedPreferences.getInstance();
+      String username = pref.getString("username")!;
+      String password = pref.getString("password")!;
+      if(user == username && pass == password){
+          print("Login success..");
+      }else{
+        print("Invalid Username or Password");
+      }
     }
   }
 
