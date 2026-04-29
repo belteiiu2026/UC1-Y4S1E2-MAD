@@ -13,7 +13,7 @@ void main() async {
 Future<void> _initData() async {
   final pref = await SharedPreferences.getInstance();
   await pref.setString("username", "mad@gmail.com");
-  await pref.setString("password", "654321");
+  await pref.setString("password", "123456");
 }
 
 

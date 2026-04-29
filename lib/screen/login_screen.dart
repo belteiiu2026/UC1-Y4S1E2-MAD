@@ -13,49 +13,73 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   bool _obscureText = true;
   bool _isEmailValid = false;
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void _onEmailChangeHandler(String email){
-      if(email.isNotEmpty && email.contains("@")){
-        setState(() {
-          _isEmailValid = true;
-        });
-      }else{
-        setState(() {
-          _isEmailValid = false;
-        });
-      }
+  void _onEmailChangeHandler(String email) {
+    if (email.isNotEmpty && email.contains("@")) {
+      setState(() {
+        _isEmailValid = true;
+      });
+    } else {
+      setState(() {
+        _isEmailValid = false;
+      });
+    }
   }
 
   final _keyForm = GlobalKey<FormState>();
 
-  Future<void> _onLoginSubmitHandler() async{
+  Future<void> _onLoginSubmitHandler() async {
     print("Email  : ${emailController.text}");
     print("Password : ${passwordController.text}");
 
-    if(_keyForm.currentState!.validate()){
+    if (_keyForm.currentState!.validate()) {
       String user = emailController.text;
       String pass = passwordController.text;
-        // Can submit to Backend API.
+      // Can submit to Backend API.
       final pref = await SharedPreferences.getInstance();
       String username = pref.getString("username")!;
       String password = pref.getString("password")!;
-      if(user == username && pass == password){
-          print("Login success..");
-      }else{
+      if (user == username && pass == password) {
+        print("Login success..");
+        final snackBar = SnackBar(
+          backgroundColor: Colors.lightBlue,
+          content: Text("Login success"),
+          action: SnackBarAction(
+            label: "Close",
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              final route = MaterialPageRoute(
+                builder: (BuildContext context) => MainScreen(),
+              );
+              Navigator.pushReplacement(context, route);
+            },
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
         print("Invalid Username or Password");
+        final snackBar = SnackBar(
+          backgroundColor: Colors.lightBlue,
+          content: Text("Invalid Username or Password"),
+          action: SnackBarAction(
+            label: "Close",
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            },
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     final customLogo = SizedBox(
       height: MediaQuery.of(context).size.height * 0.2,
       child: appLogo.logo,
@@ -66,131 +90,151 @@ class _LoginScreenState extends State<LoginScreen> {
       child: TextFormField(
         controller: emailController,
         onChanged: _onEmailChangeHandler,
-      decoration: InputDecoration(
+        decoration: InputDecoration(
           prefixIcon: Icon(Icons.mail),
-        suffixIcon: _isEmailValid ?  Icon(Icons.check_circle, color: Colors.green,) :  Icon(Icons.check_circle),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30)
+          suffixIcon: _isEmailValid
+              ? Icon(Icons.check_circle, color: Colors.green)
+              : Icon(Icons.check_circle),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+          hintText: "Email",
         ),
-        hintText: "Email"
-      ),
-        validator: (v){
-          if(v!.isEmpty){
+        validator: (v) {
+          if (v!.isEmpty) {
             return "Email could not be blank.";
           }
           return null;
         },
-    )
+      ),
     );
 
     final passwordTextField = Padding(
-        padding: EdgeInsets.all(8),
-        child: TextFormField(
-          controller: passwordController,
-      obscureText: _obscureText,
-      decoration: InputDecoration(
+      padding: EdgeInsets.all(8),
+      child: TextFormField(
+        controller: passwordController,
+        obscureText: _obscureText,
+        decoration: InputDecoration(
           prefixIcon: Icon(Icons.lock),
-          suffixIcon: IconButton(onPressed: (){
-            setState(() {
-              _obscureText = !_obscureText;
-            });
-          }, icon: _obscureText ? Icon(Icons.visibility_off) : Icon(Icons.visibility)),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30)
+          suffixIcon: IconButton(
+            onPressed: () {
+              setState(() {
+                _obscureText = !_obscureText;
+              });
+            },
+            icon: _obscureText
+                ? Icon(Icons.visibility_off)
+                : Icon(Icons.visibility),
           ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
           hintText: "Password",
+        ),
+        validator: (v) {
+          if (v!.isEmpty) {
+            return "Password could not be blank.";
+          }
+          return null;
+        },
       ),
-          validator: (v){
-            if(v!.isEmpty){
-              return "Password could not be blank.";
-            }
-            return null;
-          },
-    )
     );
 
-    final loginButton = Padding(padding: EdgeInsets.only(left: 8, right: 8, bottom: 16),
+    final loginButton = Padding(
+      padding: EdgeInsets.only(left: 8, right: 8, bottom: 16),
       child: SizedBox(
         height: 50,
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF3051A0)
-            ),
-            onPressed: _onLoginSubmitHandler
-            , child: Text("ចូលប្រើ", style: TextStyle(color: Colors.white),)),
-      ),);
+          style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF3051A0)),
+          onPressed: _onLoginSubmitHandler,
+          child: Text("ចូលប្រើ", style: TextStyle(color: Colors.white)),
+        ),
+      ),
+    );
 
     final forgetPassword = Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        TextButton(onPressed: (){
-          final route = MaterialPageRoute(builder: (BuildContext context) => ForgetPasswordScreen());
-          Navigator.push(context, route);
-        }, child: Text("ភ្លេចលេខសង្ងាត់"))
+        TextButton(
+          onPressed: () {
+            final route = MaterialPageRoute(
+              builder: (BuildContext context) => ForgetPasswordScreen(),
+            );
+            Navigator.push(context, route);
+          },
+          child: Text("ភ្លេចលេខសង្ងាត់"),
+        ),
       ],
     );
-    
+
     final noAccount = Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text("មិនមានគណនីទេ?"),
-        TextButton(onPressed: (){
-          final route = MaterialPageRoute(builder: (BuildContext context) => RegisterScreen());
-          Navigator.push(context, route);
-        }, child: Text("ចុះឈ្មោះ", style: TextStyle(fontWeight: FontWeight.bold),))
+        TextButton(
+          onPressed: () {
+            final route = MaterialPageRoute(
+              builder: (BuildContext context) => RegisterScreen(),
+            );
+            Navigator.push(context, route);
+          },
+          child: Text(
+            "ចុះឈ្មោះ",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
       ],
     );
 
     final orLineWidget = Row(
       children: [
-        Expanded(child: Divider(thickness: 2,)),
+        Expanded(child: Divider(thickness: 2)),
         Text("ឬក៏"),
-        Expanded(child: Divider(thickness: 2,)),
+        Expanded(child: Divider(thickness: 2)),
       ],
     );
 
     final socialWidget = Padding(
       padding: EdgeInsets.only(top: 16),
       child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.facebook, color: Colors.blue,size: 40,),
-        SizedBox(width: 8,),
-        Icon(Icons.mail_outlined, color: Colors.red,size: 40,)
-      ],
-    ),);
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.facebook, color: Colors.blue, size: 40),
+          SizedBox(width: 8),
+          Icon(Icons.mail_outlined, color: Colors.red, size: 40),
+        ],
+      ),
+    );
 
     final loginForm = Form(
-        key: _keyForm,
-        child: Column(
-          children: [
-            usernameTextField,
-            passwordTextField,
-            forgetPassword
-          ],
-        ),
-      );
+      key: _keyForm,
+      child: Column(
+        children: [usernameTextField, passwordTextField, forgetPassword],
+      ),
+    );
 
-    final _skipButton = TextButton(onPressed: (){
-      final route = MaterialPageRoute(builder: (BuildContext context) => MainScreen());
-      Navigator.pushReplacement(context, route);
-    }, child: Text("រំលង", style: TextStyle(color: Colors.blue),));
+    final _skipButton = TextButton(
+      onPressed: () {
+        final route = MaterialPageRoute(
+          builder: (BuildContext context) => MainScreen(),
+        );
+        Navigator.pushReplacement(context, route);
+      },
+      child: Text("រំលង", style: TextStyle(color: Colors.blue)),
+    );
 
     return Scaffold(
       body: SafeArea(
-          child: Column(
-        children: [
-          customLogo,
-          loginForm,
-          loginButton,
-          noAccount,
-          orLineWidget,
-          socialWidget,
-          SizedBox(height: 40,),
-          _skipButton
-        ],
-      )),
+        child: Column(
+          children: [
+            customLogo,
+            loginForm,
+            loginButton,
+            noAccount,
+            orLineWidget,
+            socialWidget,
+            SizedBox(height: 40),
+            _skipButton,
+          ],
+        ),
+      ),
     );
   }
 }
