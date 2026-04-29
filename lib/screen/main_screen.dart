@@ -50,6 +50,7 @@ class _MainScreenState extends State<MainScreen> {
       unselectedFontSize: 13,
       showSelectedLabels: true,
       showUnselectedLabels: true,
+      unselectedItemColor: Colors.black87,
     );
 
     return Scaffold(
