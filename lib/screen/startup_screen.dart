@@ -10,9 +10,9 @@ class StartupScreen extends StatefulWidget {
 }
 
 class _StartupScreenState extends State<StartupScreen> {
+
   @override
   Widget build(BuildContext context) {
-
 
     final getStartBtn = Padding(padding: EdgeInsets.only(left: 8, right: 8, bottom: 16),
     child: SizedBox(
