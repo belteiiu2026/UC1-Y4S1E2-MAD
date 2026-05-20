@@ -24,9 +24,16 @@ class _AccountScreenState extends State<AccountScreen> {
         height: 50,
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF3051A0)),
+          style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFD45555)),
           onPressed: _onLogoutSubmitHandler,
-          child: Text("ចាកចេញ", style: TextStyle(color: Colors.white)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("ចាកចេញ", style: TextStyle(color: Colors.white)),
+              SizedBox(width: 4,),
+              Icon(Icons.logout_outlined, color: Colors.white,)
+            ],
+          ),
         ),
       ),
     );
@@ -38,7 +45,30 @@ class _AccountScreenState extends State<AccountScreen> {
       ),
       body: SafeArea(child: Column(
         children: [
-          Expanded(child: Text("Account")),
+          Expanded(
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.account_circle),
+                    title: Text("Chhai Chivon"),
+                    subtitle: Text("Full Name"),
+                  ),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.mail),
+                    title: Text("mad@gmail.com"),
+                    subtitle: Text("Email"),
+                  ),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.shopping_cart),
+                    title: Text("Order"),
+                    subtitle: Text("Cart"),
+                  ),
+                  Divider()
+                ],
+              )
+          ),
           logoutButton
         ],
       )),

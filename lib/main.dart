@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mad/data/db_manager.dart';
 import 'package:mad/screen/startup_screen.dart';
@@ -30,7 +31,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'MAD',
       theme: ThemeData(
         // fontFamily: 'NotoSansKhmer',

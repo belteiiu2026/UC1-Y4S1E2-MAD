@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mad/controller/order_controller.dart';
 import 'package:mad/model/orders.dart';
 import 'package:mad/service/order_service.dart';
 
@@ -11,9 +13,11 @@ class BookDetailScreen extends StatefulWidget {
 
 class _BookDetailScreenState extends State<BookDetailScreen> {
 
+  // Dependency Injection
+  final orderController = Get.put(OrderController());
 
   Future<void> _orderProcess() async{
-    final orders = Orders(
+    final orderItem = Orders(
         bookId: 1,
         qty: 1,
         amount: 20000,
@@ -21,7 +25,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
         discount : 0,
         totalAmount: 20000
     );
-    await OrderService.instance.insertOrder(orders);
+    orderController.orderList.add(orderItem);
     final snackBar = SnackBar(content: Text("Order success"));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
