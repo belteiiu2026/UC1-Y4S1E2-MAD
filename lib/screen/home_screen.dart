@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mad/controller/order_controller.dart';
+import 'package:mad/controller/product_controller.dart';
 import 'package:mad/data/shared_pref_manager.dart';
+import 'package:mad/model/product.dart';
 import 'package:mad/screen/book_detail_screen.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:mad/service/product_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,11 +20,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final orderController = Get.put(OrderController());
 
+  final productController = Get.put(ProductController());
+
   @override
   void initState() {
     super.initState();
     _loadUsername();
+    // _loadProduct();
   }
+
+  //
+  // Future<void> _loadProduct() async{
+  //   await ProductService.instance.getProducts();
+  // }
 
   Future<void> _loadUsername() async {
     final sharedPrefManager = SharedPrefManager();
@@ -52,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
 
-    List<String> menuArr = ["All", "ប្រលោមលោក","បច្ចេកវិទ្យា","សាសនា"];
+    List<String> menuArr = ["All", "ប្រលោមលោក", "បច្ចេកវិទ្យា", "សាសនា"];
 
     List<Widget> menuList = List.generate(menuArr.length, (i) {
       return Container(
@@ -78,12 +89,53 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
 
+    final booksListRow2  = GetBuilder<ProductController>(
+        builder: (_)  => SizedBox(
+          height: 260,
+          child: productController.isLoading.value ? Center(child: CircularProgressIndicator(),) :
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(children: List.generate(productController.products.length, (i) {
+              Product product = productController.products[i];
+              return GestureDetector(
+                child: Padding(
+                  padding: EdgeInsetsGeometry.all(8),
+                  child:
+                  // Image.asset(
+                  //   "assets/images/book${i + 1}.png",
+                  //   height: 250,
+                  //   fit: BoxFit.cover,
+                  // )
+                  Image.network("${product.image}",
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child; // Image loaded completely
+                      return Image.asset('assets/images/default-image-cover.jpg'); // While loading
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset('assets/images/default-image-cover.jpg'); // If network fails
+                    },
+                  )
+                  ,
+                ),
+                onTap: () {
+                  final route = MaterialPageRoute(
+                    builder: (BuildContext context) => BookDetailScreen(),
+                  );
+                  Navigator.push(context, route);
+                },
+              );
+            })),
+          ),
+        ));
+
+
     List<Widget> booksList = List.generate(3, (i) {
       return GestureDetector(
         child: Padding(
           padding: EdgeInsetsGeometry.all(8),
           child: Image.asset(
-            "assets/images/book${i+1}.png",
+            "assets/images/book${i + 1}.png",
             height: 250,
             fit: BoxFit.cover,
           ),
@@ -138,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             menuListRow,
-            booksListRow,
+            booksListRow2,
             Padding(
               padding: EdgeInsets.only(left: 16, right: 16),
               child: Text(
