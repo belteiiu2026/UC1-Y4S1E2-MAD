@@ -17,6 +17,12 @@ class _CartScreenState extends State<CartScreen> {
   String _errorMessage = "No Data";
   List<Orders> orderList = [];
 
+  Map<int, int> orderItems = {
+    1 : 1,
+    2 : 1,
+    3 : 3
+  };
+
   @override
   void initState() {
     super.initState();
@@ -89,7 +95,8 @@ class _CartScreenState extends State<CartScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("${m.phoneNumber}",
+                            Text(
+                              "${m.phoneNumber}",
                               style: TextStyle(fontSize: 18),
                             ),
                           ],
@@ -221,18 +228,21 @@ class _CartScreenState extends State<CartScreen> {
     final orderAndCheckOutRow = Column(children: [orderInfoRow, checkoutBtn]);
 
     return Scaffold(
-      appBar: AppBar(elevation: 3, title: Text("Cart"), centerTitle: true),
+      appBar: AppBar(title: Text("Cart"), centerTitle: true),
       body: SafeArea(
         child: Obx(
           () => orderController.isLoading.value
               ? Center(child: CircularProgressIndicator())
               : orderController.orderList.length == 0
               ? Center(child: Text("No Cart"))
-              : Column(
-                  children: [
-                    Expanded(child: orderListWidget),
-                    orderAndCheckOutRow,
-                  ],
+              : Padding(
+                  padding: EdgeInsets.only(left: 16, right: 16),
+                  child: Column(
+                    children: [
+                      Expanded(child: orderListWidget),
+                      orderAndCheckOutRow,
+                    ],
+                  ),
                 ),
         ),
       ),

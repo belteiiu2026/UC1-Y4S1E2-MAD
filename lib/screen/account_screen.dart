@@ -10,6 +10,8 @@ class AccountScreen extends StatefulWidget {
 
 class _AccountScreenState extends State<AccountScreen> {
 
+  bool _isUserLogin = false;
+
   Future<void> _onLogoutSubmitHandler() async {
     final sharedPrefManager = SharedPrefManager();
     sharedPrefManager.removeSharedPref("fullName");
@@ -41,13 +43,27 @@ class _AccountScreenState extends State<AccountScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        elevation: 3,
+        title: Text("Profile"),
+        centerTitle: true,
       ),
       body: SafeArea(child: Column(
         children: [
+
           Expanded(
               child: Column(
                 children: [
+                  Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/images/default-avatar-profile.avif')),
+                      borderRadius: BorderRadius.circular(50)
+                    ),
+                  ),
+
+
                   ListTile(
                     leading: Icon(Icons.account_circle),
                     title: Text("Chhai Chivon"),
@@ -65,11 +81,23 @@ class _AccountScreenState extends State<AccountScreen> {
                     title: Text("Order"),
                     subtitle: Text("Cart"),
                   ),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.light_mode),
+                    title: Text("Light"),
+                    subtitle: Text("Theme"),
+                  ),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.language),
+                    title: Text("English"),
+                    subtitle: Text("Language"),
+                  ),
                   Divider()
                 ],
               )
           ),
-          logoutButton
+          _isUserLogin ? logoutButton : Container()
         ],
       )),
     );

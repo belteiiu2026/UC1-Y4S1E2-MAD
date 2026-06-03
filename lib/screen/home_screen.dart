@@ -58,8 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
       return Container(
         width: 100,
         child: TextButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.black45),
+          onPressed: () {
+
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.redAccent),
           child: Text("${menuArr[i]}", style: TextStyle(color: Colors.white),),
         ),
       );

@@ -21,7 +21,7 @@ class _StartupScreenState extends State<StartupScreen> {
       width: MediaQuery.of(context).size.width,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF3051A0)
+              backgroundColor: Colors.redAccent
           ),
           onPressed: (){
 
