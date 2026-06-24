@@ -1,21 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mad/data/db_manager.dart';
+import 'package:mad/firebase_options.dart';
 import 'package:mad/screen/startup_screen.dart';
 import 'package:mad/widgets/app_color.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Sqflite DB
-  await DbManager.instance.database;
-
-  // File Storage
-  // final fileStorageManager = FileStorageManager();
-  // await fileStorageManager.initFileStorage();
-  // await fileStorageManager.saveFileStorage();
-  // await fileStorageManager.readFileStorage();
-
+  // Configure with Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   runApp(const App());
 }
 

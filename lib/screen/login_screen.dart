@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:mad/screen/forget_password_screen.dart';
 import 'package:mad/screen/main_screen.dart';
@@ -76,6 +78,18 @@ class _LoginScreenState extends State<LoginScreen> {
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+    }
+  }
+
+  Future<void> _facebookAuth() async {
+    LoginResult result = await FacebookAuth.instance.login();
+    print("result : ${result.accessToken!.tokenString}");
+    if(result.status == LoginStatus.success){
+      // Create Credential
+      OAuthCredential credential = FacebookAuthProvider.credential(result.accessToken!.tokenString);
+      // SignInWithCredential
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      Get.offAll(MainScreen());
     }
   }
 
@@ -197,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.facebook, color: Colors.blue, size: 40),
+          IconButton(onPressed: _facebookAuth, icon: Icon(Icons.facebook, color: Colors.blue, size: 40)),
           SizedBox(width: 8),
           Icon(Icons.mail_outlined, color: Colors.red, size: 40),
         ],

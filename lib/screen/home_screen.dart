@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:mad/controller/order_controller.dart';
 import 'package:mad/controller/product_controller.dart';
@@ -16,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String _fullName = "Guest";
+  String? _fullName = "Guest";
 
   final orderController = Get.put(OrderController());
 
@@ -25,7 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _loadUsername();
+    _loadCurrentUser();
+    _loadUserData();
     // _loadProduct();
   }
 
@@ -34,12 +37,23 @@ class _HomeScreenState extends State<HomeScreen> {
   //   await ProductService.instance.getProducts();
   // }
 
-  Future<void> _loadUsername() async {
-    final sharedPrefManager = SharedPrefManager();
-    String fullName = await sharedPrefManager.getSharedPref("fullName");
+  Future<void> _loadCurrentUser() async {
+    // final sharedPrefManager = SharedPrefManager();
+    // String fullName = await sharedPrefManager.getSharedPref("fullName");
+    User? currentUser =  await FirebaseAuth.instance.currentUser;
     setState(() {
-      _fullName = fullName;
+      _fullName = currentUser!.displayName ?? "Guest";
     });
+  }
+
+  Future<void> _loadUserData() async{
+    final u = await FacebookAuth.instance.getUserData(
+        fields: "email,name,picture.width(200)",);
+    print('Email: ${u['email']}');
+    print('Picture:${u['picture']['data']['url']}');
+    String photoUrl = "${u['picture']['data']['url']}";
+    User? user = await FirebaseAuth.instance.currentUser;
+    user!.updatePhotoURL(photoUrl);
   }
 
   @override
@@ -88,6 +102,46 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+
+    final booksListRow3  = Obx(() {
+        if(productController.isLoading.value == false){
+          return Center(child: CircularProgressIndicator(),);
+        }
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(children: List.generate(productController.products.length, (i) {
+            Product product = productController.products[i];
+            return GestureDetector(
+              child: Padding(
+                padding: EdgeInsetsGeometry.all(8),
+                child:
+                // Image.asset(
+                //   "assets/images/book${i + 1}.png",
+                //   height: 250,
+                //   fit: BoxFit.cover,
+                // )
+                Image.network("${product.image}",
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child; // Image loaded completely
+                    return Image.asset('assets/images/default-image-cover.jpg'); // While loading
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset('assets/images/default-image-cover.jpg'); // If network fails
+                  },
+                )
+                ,
+              ),
+              onTap: () {
+                final route = MaterialPageRoute(
+                  builder: (BuildContext context) => BookDetailScreen(),
+                );
+                Navigator.push(context, route);
+              },
+            );
+          })),
+        );
+    });
 
     final booksListRow2  = GetBuilder<ProductController>(
         builder: (_)  => SizedBox(
@@ -198,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
             ),
-            booksListRow,
+            booksListRow3,
           ],
         ),
       ),
